@@ -1,0 +1,147 @@
+##############################################################################
+##                                                                          ##
+##                              SHA-Y                                       ##
+##                                                                          ##
+##  Um Algoritmo de Hash Mágico e Místico, derivado das profundezas da      ##
+##  matemática e das constantes universais. Desenvolvido por um cientista   ##
+##  excêntrico em busca do perfeito equilíbrio entre ordem e caos.          ##
+##                                                                          ##
+##############################################################################
+
+import struct
+import math
+
+# Função auxiliar para converter um float em um inteiro hexadecimal de 32 bits
+def float_to_hex(f):
+    """
+    Transmuta um valor de ponto flutuante para um inteiro hexadecimal de 32 bits,
+    preservando a essência numérica em uma forma arcana.
+
+    Args:
+        f (float): O valor de ponto flutuante a ser convertido.
+
+    Returns:
+        int: O valor convertido em formato hexadecimal de 32 bits.
+    """
+    return int(f * (2**32)) & 0xffffffff
+
+# Definição de phi (o número áureo)
+phi = (1 + math.sqrt(5)) / 2
+
+# Geração de valores iniciais baseados em constantes matemáticas
+h_initial = [
+    float_to_hex(math.pi),        # π - A constante transcendental dos círculos.
+    float_to_hex(math.e),         # e - A base dos logaritmos naturais.
+    float_to_hex(math.sqrt(2)),   # √2 - A raiz quadrada da dualidade.
+    float_to_hex(math.sqrt(3)),   # √3 - A raiz da trindade.
+    float_to_hex(math.sqrt(5)),   # √5 - A raiz da harmonia.
+    float_to_hex(math.log(2)),    # log(2) - O segredo da duplicação.
+    float_to_hex(math.log(3)),    # log(3) - A tríade natural.
+    float_to_hex(math.log(5)),    # log(5) - A quintessência.
+    float_to_hex(phi),            # φ (Número Áureo) - O divino número áureo.
+    float_to_hex(math.gamma(0.5)),# Γ(0.5) - A função Gamma na meia vida.
+    float_to_hex(math.gamma(1.5)),# Γ(1.5) - A extensão da função Gamma.
+    float_to_hex(math.gamma(2.5)),# Γ(2.5) - A função Gamma em suas travessuras.
+    float_to_hex(math.gamma(3.5)) # Γ(3.5) - A função Gamma no seu esplendor.
+]
+
+def custom_sha(data):
+    """
+    Implementação customizada do algoritmo SHA que utiliza 13 variáveis de hash,
+    240 rodadas e funções de rotação personalizadas com base em propriedades matemáticas.
+
+    Args:
+        data (bytes): A mensagem de entrada a ser hashada.
+
+    Returns:
+        str: O hash final em formato hexadecimal.
+    """
+    
+    def custom_rotate(n, b, c):
+        """
+        Função de rotação customizada que combina rotações para a esquerda e para a direita.
+
+        Args:
+            n (int): O valor a ser rotacionado.
+            b (int): Número de bits para a rotação para a esquerda.
+            c (int): Número de bits para a rotação para a direita.
+
+        Returns:
+            int: O valor rotacionado.
+        """
+        # Combinação de rotação para a esquerda, direita e soma com uma constante
+        return ((n << b) | (n >> (32 - b)) | (n >> c) | (n << c)) & 0xffffffff
+    
+    # Copia dos valores iniciais de hash para uso interno
+    h = h_initial[:]
+    
+    # Calcula o comprimento original da mensagem em bytes e bits
+    original_byte_len = len(data)
+    original_bit_len = original_byte_len * 8
+    
+    # Adiciona o bit '1' seguido de bits '0' para preenchimento
+    data += b'\x80'
+    
+    # Adiciona mais bits '0' até que o comprimento seja 64 bits a menos de um múltiplo de 512
+    while len(data) % 64 != 56:
+        data += b'\x00'
+    
+    # Anexa o comprimento original da mensagem em bits como um inteiro de 64 bits
+    data += struct.pack('>Q', original_bit_len)
+    
+    # Processa a mensagem em blocos de 512 bits
+    for i in range(0, len(data), 64):
+        w = [0] * 240  # Expande as palavras de mensagem para 240 palavras de 32 bits
+        for j in range(16):
+            # Converte cada bloco de 4 bytes em um inteiro de 32 bits
+            w[j] = struct.unpack('>I', data[i + j * 4:i + j * 4 + 4])[0]
+        
+        # Expande as 16 palavras iniciais para 240 palavras
+        for j in range(16, 240):
+            w[j] = custom_rotate(w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16], 1, 3)
+        
+        # Inicializa as variáveis temporárias a partir dos valores de hash
+        a, b, c, d, e, f, g, h0, h1, h2, h3, h4, h5 = h
+        
+        # Loop de compressão principal de 240 iterações
+        for j in range(240):
+            if 0 <= j <= 79:
+                fun = (b & c) | ((~b) & d)
+                k = 0x5A827999 + j
+            elif 80 <= j <= 159:
+                fun = b ^ c ^ d
+                k = 0x6ED9EBA1 + j
+            elif 160 <= j <= 239:
+                fun = (b & c) | (b & d) | (c & d)
+                k = 0x8F1BBCDC + j
+            
+            # Calcula o valor temporário usando a função de rotação customizada
+            temp = (custom_rotate(a, 5, 7) + fun + e + k + w[j]) & 0xffffffff
+            e = d
+            d = c
+            c = custom_rotate(b, 30, 2)
+            b = a
+            a = temp
+        
+        # Atualiza os valores de hash com os valores temporários
+        h[0] = (h[0] + a) & 0xffffffff
+        h[1] = (h[1] + b) & 0xffffffff
+        h[2] = (h[2] + c) & 0xffffffff
+        h[3] = (h[3] + d) & 0xffffffff
+        h[4] = (h[4] + e) & 0xffffffff
+        h[5] = (h[5] + f) & 0xffffffff
+        h[6] = (h[6] + g) & 0xffffffff
+        h[7] = (h[7] + h0) & 0xffffffff
+        h[8] = (h[8] + h1) & 0xffffffff
+        h[9] = (h[9] + h2) & 0xffffffff
+        h[10] = (h[10] + h3) & 0xffffffff
+        h[11] = (h[11] + h4) & 0xffffffff
+        h[12] = (h[12] + h5) & 0xffffffff
+    
+    # Concatena os valores de hash finais em uma string hexadecimal
+    return ''.join(['%08x' % i for i in h])
+
+# Exemplo de uso
+mensagem = b"Hello, World!"
+hash_resultado = custom_sha(mensagem)
+print(f"Custom SHA Hash: {hash_resultado}")
