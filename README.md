@@ -20,8 +20,8 @@ SHA-Y é um algoritmo de hash customizado que utiliza 13 variáveis de hash, 240
 Para utilizar o SHA-Y, você precisará ter o Python instalado em seu sistema. Clone este repositório e navegue até o diretório do projeto:
 
 ```bash
-git clone https://github.com/ybraz/shay.git
-cd shay
+git clone https://github.com/ybraz/SHA-Y.git
+cd SHA-Y
 ```
 
 ## Uso
