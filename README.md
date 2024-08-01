@@ -1,6 +1,6 @@
 # SHA-Y: O Algoritmo de Hash Místico
 
-Bem-vindo ao repositório de **SHA-Y**, um algoritmo de hash que mergulha nas profundezas das constantes matemáticas e das propriedades universais. Desenvolvido por um cientista excêntrico e genial, este algoritmo é uma ode à beleza matemática e à complexidade do universo.
+Algoritmo de hash nerd que considera matemáticas e propriedades universais. Este algoritmo é uma ode à beleza matemática e à complexidade do universo.
 
 ## Sumário
 
