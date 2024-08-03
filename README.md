@@ -1,6 +1,6 @@
 # SHA-Y: O Algoritmo de Hash Místico
 
-Algoritmo de hash nerd que considera matemáticas e propriedades universais. Este algoritmo é uma ode à beleza matemática e à complexidade do universo.
+Algoritmo de hash nerd que considera matemática e propriedades universais. Este algoritmo é uma ode à beleza matemática e à complexidade do universo.
 
 ## Sumário
 
@@ -38,7 +38,7 @@ print(f"Custom SHA Hash: {hash_resultado}")
 
 ## Como Funciona
 
-SHA-Y é construído em torno de conceitos matemáticos fascinantes:
+SHA-Y é construído em torno de conceitos matemáticos:
 
 1. **Constantes Matemáticas**: Utiliza valores iniciais derivados de constantes como π (pi), e (número de Euler), φ (número áureo) e outras.
 2. **Funções de Rotação Customizadas**: Combina rotações para a esquerda e para a direita, criando uma função de rotação única.
@@ -70,7 +70,3 @@ Contribuições são bem-vindas! Se você é um entusiasta da criptografia ou um
 ## Licença
 
 Este projeto é licenciado sob a Licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
-
----
-
-Mergulhe no código e explore a beleza mística das constantes matemáticas e da criptografia personalizada. Que a jornada seja tão fascinante quanto as equações que a compõem!
